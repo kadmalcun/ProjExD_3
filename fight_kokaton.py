@@ -53,6 +53,7 @@ class Bird:
         こうかとん画像Surfaceを生成する
         引数 xy：こうかとん画像の初期位置座標タプル
         """
+        self.dire = (+5, 0)
         self.img = __class__.imgs[(+5, 0)]
         self.rct: pg.Rect = self.img.get_rect()
         self.rct.center = xy
@@ -252,7 +253,6 @@ def main():
 
         # スコアを描画
         score.update(screen)
-
         pg.display.update()
         tmr += 1
         clock.tick(50)
