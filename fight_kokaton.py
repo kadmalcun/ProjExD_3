@@ -84,7 +84,7 @@ class Bird:
         screen.blit(self.img, self.rct)
 
 
-class Beam:
+class  Beam:
     """
     こうかとんが放つビームに関するクラス
     """
@@ -93,10 +93,10 @@ class Beam:
         ビーム画像Surfaceを生成する
         引数 bird：ビームを放つこうかとん（Birdインスタンス）
         """
-        self.img = pg.image.load(f"fig/beam.png")
-        self.rct = self.img.get_rect() # Rect
-        self.rct.centery = bird.rct.centery # こうかとんの中心縦座標
-        self.rct.left = bird.rct.right # こうかとんの右座標
+        self.img = pg.image.load(f"fig/beam.png")  # Surface
+        self.rct = self.img.get_rect()  # Rect
+        self.rct.centery = bird.rct.centery  # ビームの中心縦座標 = こうかとんの中心縦座標
+        self.rct.left = bird.rct.right  # ビームの左座標 = こうかとんの右座標
         self.vx, self.vy = +5, 0
 
     def update(self, screen: pg.Surface):
@@ -162,25 +162,27 @@ def main():
             if bird.rct.colliderect(bomb.rct):
                 # ゲームオーバー時に，こうかとん画像を切り替え，1秒間表示させる
                 bird.change_img(8, screen)
+                fonto = pg.font.Font(None, 80)
+                txt = fonto.render("Game Over", True, (255, 0, 0))
+                screen.blit(txt, [WIDTH//2-150, HEIGHT//2])                
                 pg.display.update()
                 time.sleep(1)
                 return
-        
         if bomb is not None:
-            # 爆弾が存在しないなら新たに爆弾を生成する
-            if beam is not None:  # ビームが存在していたら
+            if beam is not None:
                 if beam.rct.colliderect(bomb.rct):
-                    # ビームが爆弾に当たったらビームと爆弾を消す
+                    # ビームが爆弾に当たったら，爆弾とビームを消す
                     beam = None
                     bomb = None
                     bird.change_img(6, screen)
                     pg.display.update()
 
+
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)
-        if beam is not None: #ビームが存在していたら
-            beam.update(screen)
-        if bomb is not None: #爆弾が存在していたら
+        if beam is not None:  # ビームが存在していたら
+            beam.update(screen)   
+        if bomb is not None:  # 爆弾が存在していたら
             bomb.update(screen)
         pg.display.update()
         tmr += 1
